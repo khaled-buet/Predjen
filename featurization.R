@@ -17,7 +17,7 @@
 #' featuredata
 library(gtools)
 featurization <-
-  function(sequences, string, seq = TRUE, seqorder = 2, pos = TRUE, posorder = 7) {
+  function(sequences, string, seq = TRUE, seqorder = 2, pos = TRUE, posorder = 2) {
     features = data.frame(1:length(sequences))
     colnames(features)[length(features)] = "Serial"
     if (seq == TRUE) {
