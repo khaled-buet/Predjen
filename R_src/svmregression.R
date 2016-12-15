@@ -24,9 +24,9 @@ svmregression = function(featurelist,featuredata, kfold = 10) {
   spcor = c()
   step = length(featuredata[,1]) / kfold
   for (i in 1:(kfold - 1)) {
-    errorS = featuredata$predictions[j:(j + step)] - predictionsS[j:(j + step)]
+    errorS = featuredata$Score[j:(j + step)] - predictionsS[j:(j + step)]
     rmseS = c(rmseS, rmse(errorS))
-    spcor = c(spcor, cor(featuredata$predictions[j:(j + step)], predictionsS[j:(j +
+    spcor = c(spcor, cor(featuredata$Score[j:(j + step)], predictionsS[j:(j +
                                                                                   step)], method = 'spearman'))
     cat(i,": SVM SPCOR = ", spcor, "\n")
     j = j + step

@@ -29,10 +29,11 @@ randomforest0 = function(featurelist, featuredata, kfold = 10, trees = 500) {
   spcor = c()
   step = length(featuredata[,1]) / kfold
   for (i in 1:(kfold - 1)) {
-    errorS = featuredata$predictions[j:(j + step)] - predictionsS[j:(j + step)]
+    errorS = featuredata$Score[j:(j + step)] - predictionsS[j:(j + step)]
     rmseS = c(rmseS, rmse(errorS))
-    spcor = c(spcor, cor(featuredata$predictions[j:(j + step)], predictionsS[j:(j +
-                                                                                  step)], method = 'spearman'))
+    spcor = c(spcor, cor(featuredata$Score[j:(j + step)], predictionsS[j:(j +
+                                                                            step)], method = 'spearman'))
+    cat(i,": RF SPCOR = ", spcor, "\n")
     j = j + step
   }
   cat("RF Regression RMSE (n-fold):", rmseS, "\n")

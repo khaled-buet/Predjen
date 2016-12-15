@@ -18,16 +18,15 @@
 lmregression = function(featurelist, featuredata, kfold = 10) {
   fformula = featureformula(featurelist)
   model1 = lm(as.formula(fformula), featuredata)
-  model2 = CVlm(data = featuredata, form.lm = model1, m = kfold)
-  predictionsS = predict(model2, featuredata)
+  predictionsS = stats::predict(model1, featuredata)
   j = 1
   rmseS = c()
   spcor = c()
   step = length(featuredata[,1]) / kfold
   for (i in 1:(kfold - 1)) {
-    errorS = featuredata$predictions[j:(j + step)] - predictionsS[j:(j + step)]
+    errorS = featuredata$Score[j:(j + step)] - predictionsS[j:(j + step)]
     rmseS = c(rmseS, rmse(errorS))
-    spcor = c(spcor, stats::cor(featuredata$predictions[j:(j + step)], predictionsS[j:(j +
+    spcor = c(spcor, stats::cor(featuredata$Score[j:(j + step)], predictionsS[j:(j +
                                                                                          step)], method = 'spearman'))
     cat(i,": LM SPCOR = ", spcor, "\n")
     j = j + step
