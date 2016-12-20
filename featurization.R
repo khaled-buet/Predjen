@@ -18,6 +18,7 @@
 library(gtools)
 featurization <-
   function(sequences, string, seq = TRUE, seqorder = 2, pos = TRUE, posorder = 2) {
+    total = 0;
     features = data.frame(1:length(sequences))
     colnames(features)[length(features)] = "Serial"
     if (seq == TRUE) {
@@ -30,7 +31,9 @@ featurization <-
           #cat(length(temp),permu[i,],"\n")
           features = data.frame(features, temp)
           colnames(features)[length(features)] = paste(permu[i,], collapse = '')
+          total = total + 1
         }
+        cat(s, " order seq. features:", length(permu[,1]), ":total features = ", total, "\n")
       }
     }
     if (pos == TRUE)
@@ -42,14 +45,19 @@ featurization <-
         permu = permutations(
           n = length(string), r = p, v = string, repeats.allowed = TRUE
         )
-        for (i in 1:length(permu[,1])) {
-          for (j in 1:minlength) {
+        ps = 0
+        for (i in 1:(length(permu[,1]))) {
+          for (j in 1:(minlength-length(permu[i,])+1)) {
+            #cat("Checking:",paste(permu[i,],collapse = ''),"\n")
             temp = findposition(sequence = sequences, pattern = paste(permu[i,], collapse = ''), j)
-            cat(length(temp),permu[i,],"\n")
+            #cat(length(temp),permu[i,],"\n")
             features = data.frame(features, temp)
             colnames(features)[length(features)] = paste0(paste(permu[i,], collapse = ''), "_", j)
+            ps = ps + 1
+            total = total + 1
           }
         }
+        cat(p, "order pos. features:", ps,":total features = ", total, "\n")
       }
     }
     features$Serial = NULL
